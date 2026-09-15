@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Resolve Desk — trợ lý hỗ trợ IT dựa trên playbook cục bộ.">
+  <title>Resolve Desk · Smart IT Support Assistant</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="shell hero">
+    <div><span class="eyebrow">RESOLVE DESK</span><h1>Smart IT Support<br>Assistant</h1></div>
+    <p>Thu thập sự cố, áp dụng playbook xử lý và tạo báo cáo kỹ thuật trong một luồng làm việc rõ ràng.</p>
+  </header>
+
+  <main class="shell">
+    <nav class="tabs" aria-label="Điều hướng">
+      <button class="tab active" data-tab="create">Tạo incident</button>
+      <button class="tab" data-tab="history">Lịch sử <span id="historyCount">0</span></button>
+    </nav>
+
+    <section id="create" class="panel active">
+      <form id="incidentForm" class="form-grid">
+        <div class="field span-2"><label for="requester">Người yêu cầu</label><input id="requester" autocomplete="name" placeholder="Nguyễn Minh Anh" required></div>
+        <div class="field span-2"><label for="description">Mô tả sự cố</label><textarea id="description" minlength="12" placeholder="Mô tả triệu chứng, thời điểm bắt đầu và thông báo lỗi..." required></textarea></div>
+        <div class="field"><label for="category">Phân loại</label><select id="category"><option>Hardware</option><option>Software</option><option>Network</option><option>Account</option></select></div>
+        <div class="field"><label for="priority">Mức độ ưu tiên</label><select id="priority"><option>Low</option><option selected>Medium</option><option>High</option><option>Critical</option></select></div>
+        <p class="privacy span-2">Không đưa mật khẩu, token hoặc dữ liệu nhạy cảm vào mô tả.</p>
+        <button class="primary span-2" type="submit">Phân tích sự cố <span>→</span></button>
+      </form>
+
+      <article id="result" class="result" hidden>
+        <div class="result-head"><div><span class="eyebrow">KẾT QUẢ</span><h2 id="resultTitle"></h2></div><span id="resultBadge" class="badge"></span></div>
+        <div class="result-grid">
+          <section><h3>Các bước troubleshooting</h3><ol id="steps"></ol></section>
+          <section><h3>Phản hồi người dùng</h3><p id="response" class="response"></p></section>
+        </div>
+        <section class="summary"><h3>Incident summary</h3><dl id="summary"></dl></section>
+        <div class="actions"><button id="downloadMd" class="secondary">Tải Markdown</button><button id="printPdf" class="secondary">In / Lưu PDF</button></div>
+      </article>
+    </section>
+
+    <section id="history" class="panel">
+      <div class="section-head"><div><span class="eyebrow">LOCAL HISTORY</span><h2>Incident đã tạo</h2></div><button id="clearHistory" class="text-button">Xóa lịch sử</button></div>
+      <div id="historyList" class="history-list"></div>
+    </section>
+  </main>
+
+  <footer>Đây là app Demo được thực hiện bởi Phạm Đoàn Thiện Phong</footer>
+  <script src="/app.js" defer></script>
+</body>
+</html>

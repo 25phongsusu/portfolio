@@ -1,0 +1,7 @@
+.venv
+__pycache__
+data
+.streamlit
+app.py
+requirements.txt
+README.md
