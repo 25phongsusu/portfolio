@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phong | Software Engineer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">phong<span>.</span></div>
+            <div class="links">
+                <a href="#about">Giới thiệu</a>
+                <a href="#projects">Dự án</a>
+                <a href="#contact" class="btn-primary-small">Liên hệ</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section id="about" class="hero">
+            <div class="hero-profile">
+                <img src="profile.jpg" alt="Phạm Đoàn Thiện Phong" class="profile-img">
+                <div class="badge">Sẵn sàng đón nhận cơ hội mới</div>
+            </div>
+            <h1 class="title">Xin chào, tôi là<br/>Phạm Đoàn Thiện Phong.</h1>
+            <h2 class="subtitle">Tôi là một Software Engineer đam mê xây dựng các hệ thống, ứng dụng mạnh mẽ và đem lại trải nghiệm mượt mà cho người dùng.</h2>
+            
+            <div class="skills-container">
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">Go</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">Node.js</span>
+                <span class="skill-tag">PostgreSQL</span>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <h3 class="section-title">Dự án nổi bật</h3>
+            <div class="grid" id="projects-grid">
+                <!-- Danh sách dự án sẽ được Javascript tự động nạp vào đây từ thư mục/dữ liệu -->
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="contact-card">
+                <h3 class="section-title text-center">Kết nối với tôi</h3>
+                <p class="text-center text-muted">Bạn có một ý tưởng dự án hoặc cần một kỹ sư phần mềm? Hãy gửi tin nhắn cho tôi.</p>
+                
+                <div class="mail-form">
+                    <textarea id="mail-body" rows="4" placeholder="Xin chào Phong, tôi muốn trao đổi về..."></textarea>
+                    <button id="btn-send" class="btn-primary">Mở ứng dụng Gmail</button>
+                    <p id="mail-status"></p>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+                    <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
+                    <span id="mail-target" style="display:none">phongpdt.work@gmail.com</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Phạm Đoàn Thiện Phong. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
