@@ -1,0 +1,29 @@
+{
+  "name": "server-operations-console",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "start": "node server/server.mjs",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@fluentui/react-components": "^9.72.3",
+    "@fluentui/react-icons": "^2.0.313",
+    "compression": "^1.8.1",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "systeminformation": "^5.27.14"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.1.0"
+  }
+}

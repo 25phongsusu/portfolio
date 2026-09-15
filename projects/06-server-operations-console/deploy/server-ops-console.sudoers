@@ -1,0 +1,1 @@
+phong ALL=(root) NOPASSWD: /usr/local/sbin/server-ops-helper *

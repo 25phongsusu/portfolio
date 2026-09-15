@@ -33,6 +33,13 @@ const myProjects = [
         description: "SaaS cá nhân quản lý đồ dùng, bảo hành, hóa đơn, lịch chăm sóc, sửa chữa và chi phí gia đình.",
         stack: ["Next.js", "TypeScript", "PWA", "Playwright"],
         link: "https://homecare-passport-demo.vercel.app"
+    },
+    {
+        number: "06",
+        title: "Server Operations Console",
+        description: "Theo dõi tài nguyên VPS, quản lý file, log, dịch vụ, firewall và cập nhật hệ thống trong một bảng điều khiển bảo mật.",
+        stack: ["React", "Node.js", "Linux", "Fluent UI"],
+        link: "https://phongvps.duckdns.org/ops/"
     }
 ];
 

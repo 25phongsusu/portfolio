@@ -1,0 +1,19 @@
+[Unit]
+Description=Server Operations Console
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=phong
+Group=phong
+WorkingDirectory=/opt/server-ops/app
+EnvironmentFile=/etc/server-ops-console.env
+ExecStart=/usr/bin/node /opt/server-ops/app/server/server.mjs
+Restart=on-failure
+RestartSec=4
+PrivateTmp=true
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
