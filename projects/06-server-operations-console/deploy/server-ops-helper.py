@@ -23,7 +23,7 @@ def main():
     action=sys.argv[1] if len(sys.argv)>1 else ""; data=payload()
     if action=="service":
         name=data.get("name"); op=data.get("operation")
-        if name not in SERVICES or op not in {"start","stop","restart"}:raise ValueError("Thao tác dịch vụ không hợp lệ")
+        if not re.match(r"^[a-zA-Z0-9_.-]+$", str(name)) or op not in {"start","stop","restart"}:raise ValueError("Thao tác dịch vụ không hợp lệ")
         if name=="server-ops-console" and op=="stop":raise ValueError("Không thể tự dừng dashboard")
         run(["systemctl",op,f"{name}.service"]);output({"ok":True});return
     if action=="file-list":
