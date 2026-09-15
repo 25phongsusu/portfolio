@@ -48,13 +48,13 @@ test("completes workflow, uploads photo and generates report", async ({ page }) 
   await page.locator('.drawer input[type="file"]').first().setInputFiles("tests/fixtures/maintenance-before.svg");
   await expect(page.getByRole("img", { name: "Trước bảo trì" })).toBeVisible();
   await page.locator(".drawer select").selectOption("Completed");
-  await page.getByRole("button", { name: "Tạo maintenance report" }).click();
+  await page.getByRole("button", { name: "Tạo báo cáo tự động" }).click();
   await expect(page.getByText("Checklist: 3/3 hạng mục hoàn thành")).toBeVisible();
   await expect(page.getByText("Lỗi phát hiện: Đầu nối input lỏng")).toBeVisible();
   await page.getByRole("button", { name: "×" }).click();
   await page.getByRole("button", { name: "Báo cáo", exact: true }).click();
-  await expect(page.getByRole("button", { name: /Kiểm tra E2E hệ thống UPS.*AI report/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: /Kiểm tra E2E hệ thống UPS.*Báo cáo tự động/ })).toBeVisible();
   await page.reload();
   await page.getByRole("button", { name: "Báo cáo", exact: true }).click();
-  await expect(page.getByRole("button", { name: /Kiểm tra E2E hệ thống UPS.*AI report/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: /Kiểm tra E2E hệ thống UPS.*Báo cáo tự động/ })).toBeVisible();
 });

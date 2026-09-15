@@ -1,0 +1,22 @@
+import { defineConfig, devices } from "@playwright/test";
+
+export default defineConfig({
+  testDir: "./tests",
+  fullyParallel: false,
+  reporter: "list",
+  use: {
+    baseURL: "http://127.0.0.1:3002",
+    trace: "retain-on-failure",
+    screenshot: "only-on-failure"
+  },
+  projects: [
+    { name: "desktop-chromium", use: { ...devices["Desktop Chrome"] } },
+    { name: "mobile-chromium", use: { ...devices["iPhone 13"], browserName: "chromium" } }
+  ],
+  webServer: {
+    command: "npm run start",
+    url: "http://127.0.0.1:3002",
+    reuseExistingServer: true,
+    timeout: 30_000
+  }
+});

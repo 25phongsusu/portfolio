@@ -1,31 +1,41 @@
+const demoHost = window.location.hostname;
+const demoUrl = (port) => `${window.location.protocol}//${demoHost}:${port}`;
+
 const myProjects = [
     {
         number: "01",
         title: "Smart IT Support Assistant",
         description: "Tiếp nhận sự cố, phân loại mức độ ưu tiên, đề xuất troubleshooting và xuất incident report.",
         stack: ["Python", "Streamlit", "SQLite", "Playbook"],
-        link: "http://127.0.0.1:8501"
+        link: demoUrl(8501)
     },
     {
         number: "02",
         title: "IT Toolbox",
         description: "Bộ công cụ hỗ trợ DNS, HTTP, port, SSL, IP, JSON, Base64, file hash và mật khẩu.",
         stack: ["Python", "Streamlit", "Networking", "Security"],
-        link: "http://127.0.0.1:8502"
+        link: demoUrl(8502)
     },
     {
         number: "03",
         title: "Smart IT Service Hub",
         description: "Không gian quản lý ticket, thiết bị, phân quyền Employee/Admin và trợ lý xử lý theo playbook.",
         stack: ["Next.js", "React", "Supabase", "TypeScript"],
-        link: "http://127.0.0.1:3000"
+        link: demoUrl(3000)
     },
     {
         number: "04",
         title: "Preventive Maintenance Manager",
         description: "Quản lý thiết bị, lịch bảo trì, checklist, ảnh hiện trường và báo cáo bảo trì tự động.",
         stack: ["Next.js", "React", "LocalStorage", "Playwright"],
-        link: "http://127.0.0.1:3001"
+        link: demoUrl(3001)
+    },
+    {
+        number: "05",
+        title: "HomeCare Passport",
+        description: "SaaS cá nhân quản lý đồ dùng, bảo hành, hóa đơn, lịch chăm sóc, sửa chữa và chi phí gia đình.",
+        stack: ["Next.js", "TypeScript", "PWA", "Playwright"],
+        link: demoUrl(3002)
     }
 ];
 

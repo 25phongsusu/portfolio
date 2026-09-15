@@ -1,4 +1,4 @@
-# AI IT Support Assistant
+# Smart IT Support Assistant
 
 ## Chạy ứng dụng
 
@@ -9,5 +9,4 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Không có `OPENAI_API_KEY`, ứng dụng vẫn chạy bằng bộ máy gợi ý cục bộ. Dữ liệu được lưu tại `data/incidents.db`.
-
+Ứng dụng sử dụng playbook cục bộ và không gọi dịch vụ xử lý bên ngoài. Dữ liệu được lưu tại `data/incidents.db`.

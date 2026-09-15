@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import io
-import json
-import os
 import sqlite3
 from datetime import datetime
 from pathlib import Path
@@ -60,29 +58,8 @@ def local_assessment(description: str, category: str, priority: str) -> dict[str
     return {"troubleshooting": steps, "response": response, "report": report}
 
 
-def ai_assessment(description: str, category: str, priority: str) -> dict[str, str]:
-    api_key = os.getenv("OPENAI_API_KEY", "").strip()
-    if not api_key:
-        return local_assessment(description, category, priority)
-    try:
-        from openai import OpenAI
-
-        client = OpenAI(api_key=api_key)
-        prompt = f"""Bạn là chuyên viên IT Support. Trả về JSON thuần với ba khóa troubleshooting, response, report.
-Viết tiếng Việt, an toàn, ngắn gọn, không đề xuất thao tác phá hủy dữ liệu.
-Category: {category}
-Priority: {priority}
-Issue: {description}"""
-        result = client.chat.completions.create(
-            model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-            messages=[{"role": "user", "content": prompt}],
-            response_format={"type": "json_object"},
-            temperature=0.2,
-        )
-        return json.loads(result.choices[0].message.content or "{}")
-    except Exception:
-        st.warning("Không thể gọi AI API. Đã dùng playbook cục bộ để tiếp tục.")
-        return local_assessment(description, category, priority)
+def smart_assessment(description: str, category: str, priority: str) -> dict[str, str]:
+    return local_assessment(description, category, priority)
 
 
 def make_pdf(title: str, body: str) -> bytes:
@@ -141,7 +118,7 @@ def app() -> None:
     }
     </style>""", unsafe_allow_html=True)
 
-    st.markdown('<section class="hero"><small>RESOLVE DESK</small><h1>AI IT Support Assistant</h1><p>Thu thập sự cố, chuẩn hóa quy trình xử lý và tạo báo cáo kỹ thuật trong một luồng làm việc.</p></section>', unsafe_allow_html=True)
+    st.markdown('<section class="hero"><small>RESOLVE DESK</small><h1>Smart IT Support Assistant</h1><p>Thu thập sự cố, áp dụng playbook xử lý và tạo báo cáo kỹ thuật trong một luồng làm việc.</p></section>', unsafe_allow_html=True)
     tab_new, tab_history = st.tabs(["Tạo incident", "Lịch sử"])
     with tab_new:
         with st.form("incident_form"):
@@ -159,7 +136,7 @@ def app() -> None:
                 st.error("Vui lòng nhập người yêu cầu và mô tả tối thiểu 12 ký tự.")
             else:
                 with st.status("Đang xây dựng phương án xử lý...", expanded=False) as status:
-                    result = ai_assessment(description, category, priority)
+                    result = smart_assessment(description, category, priority)
                     incident_id = save_incident(requester, description, category, priority, result)
                     status.update(label=f"Đã tạo incident #{incident_id}", state="complete")
                 st.session_state["latest"] = (incident_id, result)

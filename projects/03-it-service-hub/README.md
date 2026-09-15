@@ -1,4 +1,4 @@
-# AI-Powered IT Service Hub
+# Smart IT Service Hub
 
 ## Chạy local
 
