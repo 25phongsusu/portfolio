@@ -2,7 +2,7 @@
 import base64, datetime, ipaddress, json, os, pathlib, pwd, re, shutil, subprocess, sys, tempfile
 
 ROOTS={"workspace":pathlib.Path("/opt/server-ops/workspace"),"nginx":pathlib.Path("/etc/nginx/sites-available"),"webroot":pathlib.Path("/var/www/html")}
-SERVICES={"nginx","docker","mosquitto","xiaozhi-ws","server-ops-console"}
+SERVICES={"nginx","docker","mosquitto","server-ops-console"}
 PROTECTED_USERS={"root","ubuntu","phong","g25phongsusu"}
 def run(args,timeout=90):
     p=subprocess.run(args,text=True,capture_output=True,timeout=timeout)

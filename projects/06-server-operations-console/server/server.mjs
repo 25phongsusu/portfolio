@@ -24,7 +24,7 @@ const attempts=new Map();
 const metrics=[];
 let updatesCache={value:0,at:0};
 const services=[
-  ["nginx","Reverse proxy và HTTPS"],["docker","Container runtime"],["mosquitto","MQTT broker"],["xiaozhi-ws","WebSocket relay"],["server-ops-console","Dashboard quản trị"]
+  ["nginx","Reverse proxy và HTTPS"],["docker","Container runtime"],["mosquitto","MQTT broker"],["server-ops-console","Dashboard quản trị"]
 ];
 const cookie=(req,name)=>Object.fromEntries((req.headers.cookie||"").split(";").map(x=>x.trim().split("=")).filter(x=>x.length===2))[name];
 const sign=value=>crypto.createHmac("sha256",secret).update(value).digest("hex");
@@ -38,11 +38,11 @@ async function helper(action,payload={}){const out=await command("sudo",["-n","/
 async function collect(){try{const[cpu,mem,fs,net]=await Promise.all([si.currentLoad(),si.mem(),si.fsSize(),si.networkStats()]);const rootFs=fs.find(x=>x.mount==="/")||fs[0],primary=net.find(x=>x.operstate==="up"&&!x.iface.includes("lo"))||net[0];metrics.push({at:Date.now(),cpu:cpu.currentLoad,ram:mem.active/mem.total*100,disk:rootFs?.use||0,rx:(primary?.rx_sec||0)/1024,tx:(primary?.tx_sec||0)/1024});if(metrics.length>120)metrics.shift()}catch(error){console.error("metric",error.message)}}
 await collect();setInterval(collect,5000).unref();setInterval(()=>{const now=Date.now();for(const[id,expires]of sessions)if(expires<=now)sessions.delete(id);for(const[ip,row]of attempts)if(row.until&&row.until<=now)attempts.delete(ip)},15*60_000).unref();
 async function status(){return Promise.all(services.map(async([name,description])=>{try{return{name,description,state:(await command("systemctl",["is-active",`${name}.service`])).trim()}}catch{return{name,description,state:"inactive"}}}))}
-async function updateCount(){if(Date.now()-updatesCache.at<600_000)return updatesCache.value;try{updatesCache={value:(await command("bash",["-lc","apt list --upgradable 2>/dev/null | tail -n +2 | wc -l"])).trim()*1,at:Date.now()}}catch{}return updatesCache.value}
+async function updateCount(){const now=Date.now();if(now-updatesCache.at>600_000){updatesCache.at=now;command("bash",["-lc","apt list --upgradable 2>/dev/null | tail -n +2 | wc -l"]).then(res=>{updatesCache.value=res.trim()*1}).catch(()=>{updatesCache.at=0})}return updatesCache.value}
 function userCount(){try{return readFileSync("/etc/passwd","utf8").split("\n").filter(line=>{const p=line.split(":");return Number(p[2])>=1000&&Number(p[2])<65534}).length}catch{return 0}}
 
 app.get("/ops/api/health",(_,res)=>res.json({ok:true}));
-app.get("/ops/api/bootstrap",async(req,res)=>res.json({authenticated:authenticated(req),host:(await si.osInfo()).hostname,os:"Ubuntu 26.04 LTS",uptime:si.time().uptime,metrics,services:await status(),updates:await updateCount(),firewall:existsSync("/etc/ufw/ufw.conf")&&readFileSync("/etc/ufw/ufw.conf","utf8").includes("ENABLED=yes")?"Active":"Inactive",users:userCount()}));
+app.get("/ops/api/bootstrap",async(req,res)=>{const[osInfo,servicesData,updatesData]=await Promise.all([si.osInfo(),status(),updateCount()]);res.json({authenticated:authenticated(req),host:osInfo.hostname,os:"Ubuntu 26.04 LTS",uptime:si.time().uptime,metrics,services:servicesData,updates:updatesData,firewall:existsSync("/etc/ufw/ufw.conf")&&readFileSync("/etc/ufw/ufw.conf","utf8").includes("ENABLED=yes")?"Active":"Inactive",users:userCount()})});
 app.post("/ops/api/login",async(req,res)=>{const ip=req.ip||"unknown",row=attempts.get(ip)||{count:0,until:0};if(row.until>Date.now())return res.status(429).json({error:"Quá nhiều lần thử. Vui lòng chờ."});const candidate=String(req.body.password||"");const ok=password&&candidate.length===password.length&&crypto.timingSafeEqual(Buffer.from(candidate),Buffer.from(password));if(!ok){row.count++;if(row.count>=5){row.until=Date.now()+15*60_000;row.count=0}attempts.set(ip,row);return res.status(401).json({error:"Mật khẩu không đúng"})}attempts.delete(ip);const id=crypto.randomBytes(24).toString("hex");sessions.set(id,Date.now()+8*60*60_000);res.setHeader("set-cookie",`ops_session=${id}.${sign(id)}; Path=/ops; HttpOnly; Secure; SameSite=Strict; Max-Age=28800`);res.json({ok:true})});
 app.post("/ops/api/logout",(req,res)=>{const raw=cookie(req,"ops_session"),id=raw?.split(".")[0];if(id)sessions.delete(id);res.setHeader("set-cookie","ops_session=; Path=/ops; HttpOnly; Secure; SameSite=Strict; Max-Age=0");res.json({ok:true})});
 app.post("/ops/api/services/action",protect,async(req,res)=>{try{res.json(await helper("service",req.body))}catch(e){res.status(400).json({error:e.message})}});
